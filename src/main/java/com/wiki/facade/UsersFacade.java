@@ -1,5 +1,6 @@
 package com.wiki.facade;
 
+import com.google.inject.Inject;
 import com.wiki.models.Users;
 import com.google.inject.persist.Transactional;
 
@@ -17,9 +18,11 @@ public class UsersFacade extends BaseFacade{
      */
     @Transactional
     public Users createNewUser(Users newUser2Save) {
+        Long userNum=entityManager.createQuery("select count(u) from Users u ",Long.class).getSingleResult();
+        newUser2Save.setUserId(userNum.intValue()+1);
         newUser2Save.getPasswordEncoded();//对密码进行加密处理
 
-        entityManager.persist(newUser2Save);
+        entityManager.merge(newUser2Save);
         return newUser2Save;
     }
 

@@ -14,7 +14,6 @@ public class Users {
      * 用户主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Integer userId;
 
