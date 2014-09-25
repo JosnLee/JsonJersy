@@ -1,0 +1,29 @@
+<div class="data-structure">
+    <h2 class="app-title">
+        <span class="title-name">
+            <span class="name">数据结构</span>
+        </span>
+        <span class="title-description"><strong>项目中用到的数据结构</strong></span>
+    </h2>
+    <!-- 各个操作控件的面板：对各个节点操作、表结构操作控件都放在这里 -->
+    <div class="control-panel">
+        <h3 class="hide">控制面板</h3>
+        <button class="btn">创建新节点</button>
+        <button class="btn">修改节点</button>
+        <button class="btn">创建新表</button>
+    </div>
+
+    <!-- 左侧放节点结构树 -->
+    <div class="tree-panel">
+        <div>
+            <h3 class="structure-node">数据结构</h3>
+            <ul id="dataStructureTree" class="ztree over-scroll"></ul>
+        </div>
+    </div>
+
+    <!-- 右侧放数据表列表 -->
+    <div class="table-panel">
+        <h3 class="current-table">{{ currentTable.chineseName + " " + currentTable.tableName }}</h3>
+        <div class="table-structure" ng-grid="tableGridOptions"></div>
+    </div>
+</div>

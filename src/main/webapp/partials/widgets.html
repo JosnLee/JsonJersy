@@ -1,0 +1,168 @@
+<div class="widgets">
+    <h2 class="app-title">
+        <span class="title-name">
+            <span class="name">常用控件</span>
+        </span>
+        <span class="title-description"><strong>项目中开发常用的控件</strong></span>
+    </h2>
+    <div class="tabbable">
+        <ul class="nav nav-tabs" id="widgets">
+            <!-- 常用控件 -->
+            <li class="active"><a href="#all-widgets">常用控件</a></li>
+            <!-- 跟页面布局相关 -->
+            <li><a href="#modal">modal</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- 常用的控件 -->
+            <div class="tab-pane active" id="all-widgets">
+                <header class="title">
+                    <h3 class="title">常用的控件</h3>
+                    <p class="title-description">DEMO地址:<a href="http://132.147.68.176:8051/heren/demo/index.html" target="_blank">http://132.147.68.176:8051/heren/demo/index.html</a></p>
+                </header>
+                <div class="dependencies">
+                    <div class="website">
+                        <h4>DEMO地址</h4>
+                        <ul class="unstyled">
+                            <li>DEMO地址(176):<a href="http://132.147.68.176:8051/heren/demo/index.html" target="_blank">http://132.147.68.176:8051/heren/demo/index.html</a></li>
+                            <li>DEMO地址(本地):<a href="http://localhost:8051/heren/demo/index.html" target="_blank">http://localhost:8051/heren/demo/index.html</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- modal——模态框 -->
+            <div class="tab-pane" id="modal">
+                <header class="title">
+                    <h3 class="title">模态框——modal</h3>
+                    <p class="title-description"></p>
+                </header>
+                <!-- modal使用时依赖的内容（CSS/JavaScript等） -->
+                <div class="dependencies">
+                    <!-- website——官方网站 -->
+                    <div class="website">
+                        <h4>官网地址</h4>
+                        <ul class="unstyled">
+                            <li>AngularUI: <a href="http://angular-ui.github.io/" target="_blank">http://angular-ui.github.io/</a></li>
+                            <li>UI-Bootstrap: <a href="http://angular-ui.github.io/bootstrap" target="_blank">http://angular-ui.github.io/bootstrap</a></li>
+                        </ul>
+                    </div>
+                    <!-- CSS依赖 -->
+                    <div class="dependency-for-css">
+                        <h4>需要加载的CSS文件</h4>
+<pre class="prettyprint linenums">
+    <code>
+        &lt;-- 模态框的样式使用的是bootstrap的，被整合到heren-v1.css中 --&gt;
+        &lt;link href="../styles/common/heren-v1.css" rel="stylesheet"&gt;
+        &lt;link href="../styles/common/heren-component.css" rel="stylesheet"&gt;
+    </code>
+</pre>
+                    </div>
+                    <!-- Javascript依赖 -->
+                    <div class="dependency-for-javascript">
+                        <h4>需要加载的JavaScript文件</h4>
+<pre class="prettyprint linenums">
+    <code>
+        &lt;-- 如果使用的是angular的modal指令，需要引入如下JS文件 --&gt;
+        &lt;script src="../javascripts/libs/angular.js"&gt;
+        &lt;script src="../javascripts/libs/ui-bootstrap-tpls.js"&gt;
+
+        &lt;-- 如果使用的是Bootstrap原生的 modal，需要引入如下JS文件 --&gt;
+        &lt;script src="../javascripts/libs/jquery.js"&gt;
+        &lt;script src="../javascripts/libs/bootstrap.js"&gt;
+
+    </code>
+</pre>
+                    </div>
+                </div>
+                <!-- demo——示例 -->
+                <div class="angular-demo">
+                    <h4>AngularJS指令版</h4>
+
+                    <!-- demo示例开始 -->
+                    <!-- 点击按钮之后，触发模态窗口 -->
+                    <button class="btn btn-large btn-primary" ng-click="openAngularJSDemonstrationModal()">查看演示</button>
+                    <!-- 模态框定义 -->
+                    <div hr-draggable modal="angularJSDemonstrationModal" close="angularJSDemonstrationModalCallback()" options="angularJSDemonstrationModalOptions">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="angularJSDemonstrationModal = false">&times;</button>
+                            <h5>Your Title</h5>
+                        </div>
+                        <div class="modal-body">
+                            Your body
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn cancel" ng-click="angularJSDemonstrationModal = false">关闭</button>
+                        </div>
+                    </div>
+
+                    <!-- demo源代码 -->
+                    <tabs prettyprint-trigger>
+                        <!-- HTML源代码 -->
+                        <pane heading="HTML">
+<pre class="prettyprint linenums">
+    <code>
+        &lt;!-- 点击按钮之后，触发模态窗口 --&gt;
+        &lt;button class="btn btn-large btn-primary" ng-click="openAngularJSDemonstrationModal()"&gt;查看演示&lt;/button&gt;
+        &lt;!-- 模态框定义 --&gt;
+        &lt;div hr-draggable modal="angularJSDemonstrationModal" close="angularJSDemonstrationModalCallback()" options="angularJSDemonstrationModalOptions"&gt;
+            &lt;div class="modal-header"&gt;
+                &lt;button type="button" class="close" ng-click="angularJSDemonstrationModal = false"&gt;&times;&lt;/button&gt;
+                &lt;h5&gt;Your Title&lt;/h5&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-body"&gt;
+                    Your body
+            &lt;/div&gt;
+            &lt;div class="modal-footer"&gt;
+                    &lt;button class="btn cancel" ng-click="angularJSDemonstrationModal = false"&gt;关闭&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    </code>
+</pre>
+                        </pane>
+                        <!-- Javascript源代码 -->
+                        <pane heading="JavaScript">
+<pre class="prettyprint linenums">
+    <code>
+        //定义ui.bootstrap.modal模态框开关
+        $scope.angularJSDemonstrationModal = false;
+
+        //打开ui.bootstrap.modal模态框
+        $scope.openAngularJSDemonstrationModal = function () {
+            //设置为true，则模态框就打开了
+            $scope.angularJSDemonstrationModal = true;
+        };
+
+        //关闭ui.bootstrap.modal模态框时，回调函数
+        $scope.angularJSDemonstrationModalCallback = function () {
+            //设置为false，则模态框就关闭了
+            $scope.angularJSDemonstrationModal = false;
+        };
+
+        //ui.bootstrap.modal模态框的配置
+        $scope.angularJSDemonstrationModalOptions = {
+            backdrop: true,
+            dialogClass: 'modal your-class',//你可以自定义的自己的类（your-class），用来对模态框进行个性化样式设置，从而不影响其他人的模态框
+            backdropFade: true,
+            dialogFade: true,
+            keyboard: false, //使用ESC键关闭
+            backdropClick: false//点击其他地方关闭，只跟backdrop=true有冲突
+        };
+    </code>
+</pre>
+                        </pane>
+                    </tabs>
+                    <!-- comments——注意事项 -->
+                    <div class="comments">
+
+                    </div>
+                </div>
+                <div class="bootstrap-demo">
+                    <h4>Bootstrap原生模态框</h4>
+                    <p>请点击<a href="http://v2.bootcss.com/javascript.html#modals" target="_blank">这里</a>查看Bootstrap原生的模态框。</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

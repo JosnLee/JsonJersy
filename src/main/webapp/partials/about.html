@@ -1,0 +1,672 @@
+<div class="about">
+    <h2 class="app-title">
+        <span class="title-name">
+            <span class="name">关于本站</span>
+        </span>
+        <span class="title-description"><strong>关于这个网站是什么、怎么搭建的</strong></span>
+    </h2>
+    <tabs>
+        <!-- 如何从零开始搭建本站 -->
+        <pane heading="如何从零开始搭建本站">
+            <header class="title">
+                <h3 class="title">如何从零开始搭建本站</h3>
+                <p class="title-description">“我们制造玩具，有些玩具改变了世界”——某公司Slogan</p>
+            </header>
+            <p>
+                从零开始搭建本站，如果你对公司的开发工具、开发技术有了一些了解，那么搭建起来会轻松一些；
+                其实不了解也没关系，我们会一步一步地进行操作，如果有不懂的地方，你可以反复参考“技术学习”、
+                “开发工具”等菜单下的相应标签页进行补充、学习。下面我们开始操作：
+            </p>
+            <div class="gradle">
+                <h4>第一步：创建、配置<strong>build.gradle</strong>文件</h4>
+                <p>
+                    这个小项目使用Gradle作为构建、依赖管理工具，所以我们需要创建一个名称为<code>build.gradle</code>（注意大小写、空格）的配置文件，进行项目构建、依赖管理等内容的配置。
+                    项目整体上使用公司的技术体系，出于简化的考虑，做了一些调整（比如没有使用flyway等），详情如下：
+                </p>
+                <ul>
+                    <li>服务器——Jetty</li>
+                    <li>REST——Jersey</li>
+                    <li>数据库——MySQL</li>
+                    <li>JPA——Hibernate</li>
+                    <li>Dependency Inject——Google Guice</li>
+                    <li>其他——Guava等</li>
+                </ul>
+                <p>
+                    (0)首先，我们创建一个名称为<code>heren-wiki</code>的文件夹，并在该文件夹里面创建一个名称为<code>build.gradle</code>的Gradle配置文件。
+                </p>
+                <p>
+                    (1)根据上面的架构，确定了我们需要在文件里面列出的依赖(dependencies)内容如下：
+                </p>
+<pre class="prettyprint">
+dependencies {
+    //Jetty
+    compile "org.eclipse.jetty:jetty-servlet:9.2.0.v20140526"
+    compile "org.eclipse.jetty:jetty-webapp:9.2.0.v20140526"
+
+    //Jersey 1.X
+    compile "com.sun.jersey:jersey-core:1.17"
+    compile "com.sun.jersey:jersey-server:1.17"
+    compile "com.sun.jersey:jersey-servlet:1.17"
+    compile "com.sun.jersey:jersey-json:1.17"
+    compile "com.sun.jersey.contribs:jersey-guice:1.17"
+
+    //Junit
+    testCompile "junit:junit:4.10"
+
+    //MySQL
+    compile "mysql:mysql-connector-java:5.1.30"
+
+    //Oracle
+    compile "com.oracle:ojdbc6:11.2.0.1.0"
+
+    //Hibernate
+    compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+    compile "org.hibernate:hibernate-validator:4.3.0.Final"
+
+    //Google Inject
+    compile "com.google.inject:guice:3.0"
+    compile "com.google.inject.extensions:guice-servlet:3.0"
+    compile "com.google.inject.extensions:guice-persist:3.0"
+
+    //Google Guava
+    compile "com.google.guava:guava:13.0.1"
+}
+</pre>
+            <p>
+                我们使用依赖仓库（repositories）的顺序，优先使用Maven本地仓库，最后再使用Maven中央仓库：
+            </p>
+<pre class="prettyprint">
+apply plugin: 'maven'
+
+repositories {
+    mavenLocal();
+    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/repositories/heren-snapshots';
+    mavenCentral();
+}
+</pre>
+            <p>
+                (2)由于项目是Java项目(使用Java7语法)，所以我们加上如下Java插件：
+            </p>
+<pre class="prettyprint">
+apply plugin: 'java'
+
+sourceCompatibility = '1.7'
+</pre>
+            <p>
+                (3)我们使用IntelliJ作为开发工具，添加idea插件（第二句配置SVN，不需要的SVN进行版本管理的话，可以不使用）：
+            </p>
+<pre class="prettyprint">
+apply plugin: 'idea'
+
+idea.project.ipr {
+    withXml { provider ->
+        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'svn'
+    }
+}
+</pre>
+            <p>
+                (4)为了能够打成war包，我们添加war插件（第二句配置war的相关信息）：
+            </p>
+<pre class="prettyprint">
+apply plugin: 'war'
+
+war {
+    baseName = "heren-wiki"
+}
+</pre>
+            <p>
+                (5)项目有可能也会以Jar包形式发布，所以我们加上fatjar插件（注意插件名称都是小写）:
+            </p>
+<pre class="prettyprint">
+apply plugin: 'fatjar'
+
+buildscript {
+    repositories {
+        mavenLocal();
+        mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+        mavenRepo url: 'http://132.147.68.178:8081/nexus/content/repositories/heren-snapshots';
+        mavenCentral();
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+}
+
+fatJar {
+    baseName = 'herenWiki'
+    manifest {
+        attributes 'Main-Class': 'com.wiki.Main'
+    }
+    exclude 'META-INF/MANIFEST.MF', '**/*.RSA', '**/*.SF', '**/*.DSA'
+}
+</pre>
+            <p>
+                (6)最后，我们把通过以上各个步骤、添加内容的做一些整理（比如插件部分都放置在同一个地方等），就形成了一个完整的<code>build.gradle</code>文件。我们可以在命令行里执行Gradle任务<code>gradle tasks</code>，来验证该配置文件是否有效。
+            </p>
+
+            </div>
+            <div class="directory">
+                <h4>第二步：创建目录结构</h4>
+                <p>
+                    Gradle项目的目录结构跟Maven项目的目录结构一样，接下来我们在<code>heren-wiki</code>目录中来创建一系列的文件夹：
+                </p>
+<pre class="prettyprint">
+heren-wiki
+    src
+        main
+            java
+            resources
+        test
+            java
+            resources
+</pre>
+                <p>
+                    因为我们创建的是一个web项目，所以我们再创建一个<code>webapp</code>目录，放置HTML、CSS、JavaScript等静态资源；由于JPA的配置文件<code>persistence.xml</code>必须放在<code>META-INFO</code>目录中，所以我们会在<code>main > resource</code>目录下创建一个<code>META-INF</code>目录；由于web项目的配置文件<code>web.xml</code>必须放在<code>WEB-INF</code>目录，所以我们需要在webapp里面创建一个<code>WEB-INF</code>目录，最终的目录结构如下：
+                </p>
+<pre class="prettyprint">
+heren-wiki
+    src
+        main
+            java
+            resources
+                META-INF
+                    persistence.xml
+            webapp
+                WEB-INF
+                    web.xml
+        test
+            java
+            resources
+</pre>
+            <p>
+                目录<code>webapp</code>是我们的打成Jar包、War包时，需要囊括的源代码资源，所以，我们需要在<code>build.gradle</code>文件中补充如下内容：
+            </p>
+<pre class="prettyprint">
+sourceSets {
+    main {
+        resources {
+            srcDirs += 'src/main/webapp'
+        }
+    }
+}
+</pre>
+            <p>
+                这样，我们可以通过在<code>heren-wiki</code>目录下，执行命令<code>gradle cI idea</code>来创建IntelliJ的项目文件，使用IntelliJ进行接下来的操作步骤。
+            </p>
+            </div>
+            <div class="web-xml">
+                <h4>第三步：添加web.xml内容</h4>
+                <p>
+                    我们将项目的初始页面设置为<code>index.html</code>，配置Google Guice的过滤器（Filter）和监听（Listener），如下所示：
+                </p>
+<pre class="prettyprint">
+<?xml version="1.0" encoding="UTF-8"?>
+&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5"&gt;
+
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+
+    &lt;filter&gt;
+        &lt;filter-name&gt;guiceFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;com.google.inject.servlet.GuiceFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;guiceFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+
+    &lt;listener&gt;
+        &lt;listener-class&gt;com.wiki.module.WikiContextListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+&lt;/web-app&gt;
+</pre>
+            </div>
+            <div class="persistence-xml">
+                <h4>第四步：添加persistence.xml内容</h4>
+                <p>
+                    JPA相关的实体、数据库连接等信息，需要在persistence.xml中进行定义，内容如下：
+                </p>
+<pre class="prettyprint">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"&gt;
+    &lt;!-- persistence.xml需要放到Classpath下面 --&gt;
+    &lt;persistence-unit name="domain" transaction-type="RESOURCE_LOCAL"&gt;
+        &lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
+        &lt;!-- 这里放JPA实体 --&gt;
+
+        &lt;!-- 提供商——Hibernate --&gt;
+        &lt;properties&gt;
+            &lt;!-- Hibernate方言 --&gt;
+            &lt;property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/&gt;
+            &lt;!-- Database Driver —— MySQL --&gt;
+            &lt;property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/&gt;
+            &lt;!-- Database Connection URL --&gt;
+            &lt;!--&lt;property name="hibernate.connection.url"--&gt;
+            &lt;!--value="jdbc:mysql://localhost:3306/sharebookmark?useUnicode=true&amp;characterEncoding=UTF-8"/&gt;--&gt;
+            &lt;property name="hibernate.connection.url"
+                      value="jdbc:mysql://132.147.68.153:3306/sharebookmark?useUnicode=true&amp;characterEncoding=UTF-8"/&gt;
+            &lt;property name="hibernate.connection.username" value="root"/&gt;
+            &lt;property name="hibernate.connection.password" value="root"/&gt;
+            &lt;!-- Database Driver —— Oracle --&gt;
+            &lt;!--&lt;property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/&gt;--&gt;
+            &lt;!-- Database Connection URL --&gt;
+            &lt;!--&lt;property name="hibernate.connection.url" value="jdbc:oracle:thin:@127.0.0.1:1521:orcl"/&gt;--&gt;
+            &lt;!--&lt;property name="hibernate.connection.username" value="herendh"/&gt;--&gt;
+            &lt;!--&lt;property name="hibernate.connection.password" value="herendh"/&gt;--&gt;
+            &lt;!--
+             其实这个hibernate.hbm2ddl.auto参数的作用主要用于：自动创建|更新|验证数据库表结构。如果不是此方面的需求建议set value="none"。
+                create：
+                每次加载hibernate时都会删除上一次的生成的表，然后根据你的model类再重新来生成新表，哪怕两次没有任何改变也要这样执行，这就是导致数据库表数据丢失的一个重要原因。
+                create-drop ：
+                每次加载hibernate时根据model类生成表，但是sessionFactory一关闭,表就自动删除。
+                update：
+                最常用的属性，第一次加载hibernate时根据model类会自动建立起表的结构（前提是先建立好数据库），以后加载hibernate时根据 model类自动更新表结构，即使表结构改变了但表中的行仍然存在不会删除以前的行。要注意的是当部署到服务器后，表结构是不会被马上建立起来的，是要等 应用第一次运行起来后才会。
+                validate ：
+                每次加载hibernate时，验证创建数据库表结构，只会和数据库中的表进行比较，不会创建新表，但是会插入新值。
+             --&gt;
+            &lt;!--&lt;property name="hibernate.hbm2ddl.auto" value="create-drop"/&gt;--&gt;
+            &lt;property name="hibernate.hbm2ddl.auto" value="validate"/&gt;
+            &lt;property name="hibernate.show_sql" value="true"/&gt;
+            &lt;property name="hibernate.format_sql" value="true"/&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;
+</pre>
+            </div>
+
+            <div class="java-class">
+                <h4>第六步：配置Google Guice</h4>
+                <p>我们在<code>web.xml</code>里面，添加了一个Google Filter——<code>com.google.inject.servlet.GuiceFilter</code>，以及一个自定义Listener——<code>com.wiki.module.WikiContextListener</code>，接下来我们就要来配置这个自定义Listener。</p>
+                <p>我们在<code>src > main > java</code>目录下，创建一个Java类，定义如下：</p>
+<pre class="prettyprint">
+package com.wiki.module;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.servlet.GuiceServletContextListener;
+/**
+ * WikiContextListener
+ */
+public class WikiContextListener extends GuiceServletContextListener {
+    public WikiContextListener(){
+    }
+
+    @Override
+    protected Injector getInjector() {
+        WikiResourceModule module = new WikiResourceModule();
+        return Guice.createInjector(module);
+    }
+}
+</pre>
+            <p>这里的<code>WikiResourceModule</code>，是我们接下来要定义的Google Guice的模块，定义如下：<p>
+<pre class="prettyprint">
+package com.wiki.module;
+
+import com.google.inject.Singleton;
+import com.google.inject.persist.PersistFilter;
+import com.google.inject.persist.jpa.JpaPersistModule;
+import com.sun.jersey.guice.JerseyServletModule;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * WikiResourceModule
+ */
+public class WikiResourceModule extends JerseyServletModule {
+    @Override
+    protected void configureServlets() {
+        bind(GuiceContainer.class);
+
+        bind(WikiCorsFilter.class).in(Singleton.class);
+        filter("/api/*").through(WikiCorsFilter.class);
+
+        Map&lt;String, String&gt; params = new HashMap&lt;String, String&gt;();
+        params.put("com.sun.jersey.config.property.packages", "com.wiki.services"); //PROPERTY_PACKAGES
+        params.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
+
+        serve("/api/*").with(GuiceContainer.class, params);
+        install(new JpaPersistModule("domain"));
+        filter("/api/*").through(PersistFilter.class);
+    }
+}
+</pre>
+            <p>本次创建的Google Module <code>WikiResourceModule</code>是一个<code>JerseyServletModule</code>，在里面配置Jersey资源信息（<code>Map</code>参数）、JPA信息等。其中的<code>WikiCorsFilter</code>是为了允许跨域访问考虑的，内容定义如下：</p>
+<pre class="prettyprint">
+package com.wiki.module;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * WikiCorsFilter.
+ */
+public class WikiCorsFilter  implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletResponse.setCharacterEncoding("UTF-8");
+
+        HttpServletResponse res = (HttpServletResponse) servletResponse;
+        res.addHeader("Access-Control-Allow-Origin", "*");
+        res.addHeader("Allow-Control-Allow-Methods", "POST,GET,OPTIONS");
+        res.addHeader("Access-Control-Allow-Credentials", "true");
+        res.addHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
+        res.addHeader("Access-Control-Max-Age", "600000");
+        res.setCharacterEncoding("UTF-8");
+
+        filterChain.doFilter(servletRequest, res);
+    }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+}
+</pre>
+            <p>到这里为止，我们已经配置好了需要的所有信息，接下来我们写一个DEMO来验证新定义的web项目是否有效。</p>
+            </div>
+            <div class="java-service">
+                <h4>第六步：创建一个测试服务——TimeService(REST资源类)</h4>
+                <p>我们创建一个Java类：<code>com.wiki.services.TimeService</code>，它的返回结果是我们定义的一个简单的自定义POJO类 <code>com.wiki.models.Time</code></p>
+                <p><code>com.wiki.models.Time</code>的定义内容如下：</p>
+<pre class="prettyprint">
+package com.wiki.models;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+@XmlRootElement
+public class Time {
+
+    private String timezone;
+    private final int year;
+    private final int month;
+    private final int day;
+    private final int hour;
+    private final int minute;
+    private final int second;
+
+    public Time() {
+        this(TimeZone.getDefault());
+    }
+
+    public Time(TimeZone timezone) {
+        final Calendar now = Calendar.getInstance(timezone);
+
+        this.timezone = now.getTimeZone().getDisplayName();
+        this.year = now.get(Calendar.YEAR);
+        this.month = now.get(Calendar.MONTH) + 1;
+        this.day = now.get(Calendar.DATE);
+        this.hour = now.get(Calendar.HOUR);
+        this.minute = now.get(Calendar.MINUTE);
+        this.second = now.get(Calendar.SECOND);
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+}
+</pre>
+            <p><code>com.wiki.services.TimeService</code>的定义内容如下：</p>
+<pre class="prettyprint">
+package com.wiki.services;
+
+import com.wiki.models.Time;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Path("/time")
+@Produces(MediaType.APPLICATION_JSON)
+public class TimeService {
+
+    @GET
+    public Time get() {
+        return new Time();
+    }
+
+}
+</pre>
+            <p>接下来，我们在<code>src > test > java</code>目录下，写一个单元测试<code>com.wiki.models.TimeTest</code>，看看我们定义的<code>com.wiki.models.Time</code>是否正常工作：</p>
+<pre class="prettyprint">
+package com.wiki.models;
+
+import org.junit.Test;
+
+import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+
+public class TimeTest {
+
+    @Test
+    public void testDefaultTimezone() throws Exception {
+        final Time time = new Time();
+        assertEquals(TimeZone.getDefault().getDisplayName(), time.getTimezone());
+    }
+
+    @Test
+    public void testSpecifiedTimezone() throws Exception {
+        final TimeZone est = TimeZone.getTimeZone("EST");
+        final Time time = new Time(est);
+        assertEquals(est.getDisplayName(), time.getTimezone());
+    }
+}
+</pre>
+            </div>
+            <div class="main-service">
+                <h4>第七步：创建启动主类——<code>com.wiki.Main</code></h4>
+                <p>为了启动我们的web服务，我们创建一个启动类：<code>com.wiki.Main</code>。</p>
+<pre class="prettyprint">
+package com.wiki;
+
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+/**
+ *
+ * This class launches the web application in an embedded Jetty container.
+ * This is the entry point to your application. The Java command that is used for
+ * launching should fire this main method.
+ *
+ */
+public class Main {
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) throws Exception{
+        String webappDirLocation = "src/main/webapp/";
+
+        // The port that we should run on can be set into an environment variable
+        // Look for that variable and default to 8080 if it isn't there.
+        String webPort = System.getenv("PORT");
+        if (webPort == null || webPort.isEmpty()) {
+            webPort = "8080";
+        }
+
+        Server server = new Server(Integer.valueOf(webPort));
+        WebAppContext root = new WebAppContext();
+
+        root.setContextPath("/");
+        root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
+        root.setResourceBase(webappDirLocation);
+
+        // Parent loader priority is a class loader setting that Jetty accepts.
+        // By default Jetty will behave like most web containers in that it will
+        // allow your application to replace non-server libraries that are part of the
+        // container. Setting parent loader priority to true changes this behavior.
+        // Read more here: http://wiki.eclipse.org/Jetty/Reference/Jetty_Classloading
+        root.setParentLoaderPriority(true);
+
+        server.setHandler(root);
+
+        server.start();
+        server.join();
+    }
+
+}
+</pre>
+            </div>
+
+            <div class="test-service">
+                <h4>第八步：创建一个测试页——index.html</h4>
+                <p>在启动<code>com.wiki.Main</code>之前，我们创建一个测试页——index.html，看看我们的web服务是否正常，我们在页面里面引入jQuery、AngularJS（都放置在一个新创建的目录<code>webapp > assets > js</code>之中）：</p>
+<pre class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app="wikiApp"&gt;
+&lt;head&gt;
+    &lt;title&gt;Test Heren Wiki&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+&lt;body ng-controller="WikiController"&gt;
+&lt;p&gt;
+    {{ time | json}}
+&lt;/p&gt;
+&lt;script src="assets/js/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="assets/js/angular.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    angular.module("wikiApp", [])
+            .controller("WikiController", ["$scope", "$http", function ($scope, $http) {
+                $scope.time = null;
+                var pathName = window.document.location.pathname;
+                $http.get(pathName.substring(0, pathName.substr(1).indexOf('/') + 1) + "/" + "api/time")
+                        .success(function (data, status, header, config) {
+                            $scope.time = data;
+                        })
+                        .error(function (data, status, header, config) {
+                            console.info(data);
+                        });
+            }])
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            <p>运行<code>com.wiki.Main</code>之后，访问如下网址：<a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>，如果成功返回当前时间，则表示项目是可用的。</p>
+            </div>
+
+        </pane>
+
+        <!-- 代码结构 -->
+        <pane heading="代码结构">
+            <header class="title">
+                <h3 class="title">代码结构</h3>
+                <p class="title-description">物以类聚，人以群分——《战国策·齐策三》《周易·系辞上》</p>
+            </header>
+            <p class="comment-img">
+                <img src="ext/technology/radar-cloud.png">
+            </p>
+        </pane>
+
+        <!-- 如何才能修炼成高手 -->
+        <pane heading="如何才能修炼成高手">
+            <header class="title">
+                <h3 class="title">如何才能修炼成高手</h3>
+                <p class="title-description">学然后知不足——《礼记·学记》</p>
+            </header>
+            <p class="comment-img">
+                <img src="ext/about/ideas.jpg"/>
+            </p>
+            <p></p><p>知识、技能与才干组成了能力的三核，那么我们如何才能修炼成高手？</p>
+            <p>三核中，知识最容易习得。</p>
+            <p><strong>往前追溯一百多年，知识分子的能力主要是拼记忆力，那个时候书不多且奇贵。</strong>清朝末年曾国藩买了一套《二十三史》，花了他一百两纹银，这大概是一个七品官员两年半的俸禄。现在网上《二十四史》一千三百人民币，大概是处级干部一周的工资。所以古人盛赞一个人一目十行且过目不忘，牛逼不说，这能省多少钱！</p>
+            <p><strong>到了上个世纪中，书成为大部分人都消费得起的东西。知识的竞争力开始转向阅读量。这时候大伙主要拼阅读量和理解力。书上都是正确答案，你知道得越多，读的文献越多，就越能胜出——今天我们的学校教育，就是这个阶段的思路。</strong></p>
+            <p>而在今天的信息时代，互联网上的知识简直不花钱（除了电费网费）。一旦载体便宜，知识总量就开始爆发。</p>
+            <p>首先，知识本身变得丰富而廉价起来。如果曾国藩活在现代，他也许就会打“《二十四史》”“免费下载”等关键词，然后偷偷搞到一套免费的盗版电子书。只要你的搜索技术好，基本上大部分的知识是廉价甚至免费的。</p>
+            <p>其次，搜索技术改变了知识存储的方式，人们可以记得关键词，知道在哪里找就好。</p>
+            <p>最后，这个年代的人面对了太多全新的问题，相关的知识也不断更新，以至于我们无法知道哪些是被验证过的，哪些是扯淡。这就需要我们有独立思考的能力。</p>
+            <p>这个年代，知识的差距转向了能力的较量——<strong>搜索能力、好奇心、独立思考能力</strong>——谁能在同样的知识海洋中学得更快、更多、更精准，谁就容易获胜。</p>
+            <p>知识的差距，变成了技能的差距，这也就让修炼转向了第二个层面——技能。<strong>当所有技能所需要的知识都存在的时候，谁先练出来，谁就是胜利者。</strong>如果有一天《九阳真经》《九阴真经》《易筋经》都上网，谁会成为武林霸主？练习最快那个呗。这个时候，知识的竞争升级到技能层面了。</p>
+            <p><strong>技能与知识最大的差别是，技能是以熟练不熟练为判断的。</strong>他没有知识那种知道或不知道，“原来是这么回事”的瞬间快感。任何人刚刚接触技能，都是笨拙而滑稽的。虽然 24 个字母清清楚楚地写在每一个键位上，但是谁也不会一开始就运指如飞。</p>
+            <p>拐个弯，谈谈中国式英语教学的问题，他们把英语当成一种知识来教——你清晰地知道[θ]是从喉咙发起的气流通过上颚冲出唇齿之间摩擦发出的浊音，但是你不一定能顺利发得标准。你可以对虚拟语气的十二种可能了如指掌，但是还是无法脱口而出：如果我是你我死了算了。（if i&nbsp;were&nbsp;you ，i&nbsp;would rather&nbsp;die.）</p>
+            <p><strong>语言是技能，而不是知识。知识能学到，而技能只能习得。知识学习是瞬间的，知道与不知道之间几乎瞬间完成。但技能则需要漫长的笨拙期——如果你不接受自己笨拙的开始，你永远也不会学好任何技能。</strong></p>
+            <p>也正因为这个心智之墙，很多知识优胜者死别也不愿走入技能的练习领域。这也是为什么“好学生”往往不如“坏学生”混得好的原因——“混社会”是门技能啊。</p>
+            <p><strong>而当一门技能被反复地操练，就会进一步内化，成为才干。正如你现在打字不需要看键盘，正如你说话张嘴就来不用考虑发音，正如你骑单车不用想着保持平衡一样，这些技能都因为反复修炼，成为你不知不觉的才干。</strong></p>
+            <p><strong>而才干一旦学会，可以很迅速地迁移到其他技能领域中去。</strong>就好像今天的小孩子学习个新电子产品一定比中年人快，他们与电脑的互动，早就成为才干，又重新迁移到新的知识和技能领域来。高手就是这样炼成的。</p>
+            <p><strong>让技能升级为才干，我们就完成了最牛的一项能力修炼：才干是自动自发的能力。</strong></p>
+            <p>无须过脑子就能够直接使用这项技能，他似乎成为你的天生属性之一。一个魔术在上台前，需要经过大概近 3 千次的练习，所以当刘谦对着镜头变魔术的时候，他的大脑肯定不会过关于“如何拉动皮筋”这样的事，那些动作完全自动化，他的脑子则在想如何配合当时的机位、镜头、所有人的表情。时间一长，这些技能也变成“镜头感”被存为才干。他可以发展新的技能了。</p>
+            <p>《一万小时天才理论》把这个能力的升级过程归功于大脑中的“髓鞘质”（我从未读准过），并且认为：“所有的动作都是神经纤维间沟通的结果。……技能线路锻炼得越多，使用得越自如，大脑就能够创造出一种非常有说服力的幻觉：一旦掌握一项技能，就会感到收放自如，仿佛是我们与生俱来的。”这就是知识—技能—才干的形成。</p>
+            <p>明星有“明星感”，老师有“个人魅力”，商业决策者有“精准的直觉”，一流的运动员有特殊的“节奏”，好的员工有天生的“责任心”，都不一定是“天赋”，而是经过大量技能练习后，才干与天赋交融的体现。人家是练出来的。才干如此的“自动自发，习焉不察”，以至于很多人从来不知道自己的才干——这真的是一种巨大的浪费。生涯规划师常用“成就故事”分析，英雄之旅等方式帮助人们发现自己的才干。</p>
+            <p>金庸小说《倚天屠龙记》中张无忌向张三丰学太极剑一段，就极大的体现了知识—技能—才干的升级过程。张无忌大敌当前，要与剑术高手比剑，却不会剑术。张三丰于是当场传他太极剑法，半个时辰后对敌。</p>
+            <p>张三丰当下站起身来，左手持剑，右手捏个剑法，双手成环，缓缓抬起，这起手式一展，跟着三环套月、大魁星、燕子抄水、左拦扫、右拦扫……一招招地演将下来，使到五十三式“指南针”，双手同时画圆，复成第五十四式“持剑归原”。张无忌不记招式，只是细看他剑招中“神在剑先、绵绵不绝”之意。</p>
+            <p>……只听张三丰问道：“孩儿，你看清楚了没有？”张无忌道：“看清楚了。”张三丰道：“都记得了没有？”张无忌道：“已忘记了一小半。”张三丰道：“好，那也难为了你。你自己去想想罢。”张无忌低头默想。</p>
+            <p>过了一会，张三丰问道：“现下怎样了？”张无忌道：“已忘记了一大半。”周颠失声叫道：“糟糕！越来越忘记得多了。张真人，你这路剑法是很深奥，看一遍怎能记得？请你再使一遍给我们教主瞧瞧罢。”张三丰微笑道：“好，我再使一遍。”提剑出招，演将起来。</p>
+            <p>众人只看了数招，心下大奇，原来第二次所使，和第一次使的竟然没一招相同。周颠叫道：“糟糕，糟糕！这可更加叫人糊涂啦。”张三丰画剑成圈，问道：“孩儿，怎样啦？”张无忌道：“还有三招没忘记。”张三丰点点头，放剑归座。</p>
+            <p>张无忌在殿上缓缓踱了一个圈子，沉思半晌，又缓缓踱了半个圈子，抬起头来，满脸喜色，叫道：“这我可全忘了，忘得干干净净的了。”张三丰道：“不坏，不坏！忘得真快，你这就请八臂神剑指教罢！</p>
+            <p>……要知张三丰传给他的乃是“&nbsp;剑意”，而非“剑招”，要他将所见到的剑招忘得半点不剩，才能得其神髓，临敌时以意驭剑，千变万化，无穷无尽。倘若尚有一两招剑法忘不干净，心有拘囿，剑法便不能纯。</p>
+            <p>金庸大侠给我们上了一门生涯课，剑招—剑术—剑意对应到职业生涯里面来，就是“知识—技能—才干”。这么短的时间里，“如何出剑”的知识和“出得熟练”的技能，显然不可能马上掌握。只有传递“剑意”才能成功。而才干的核心，就是自动自发，无知有能，所以“剑招”忘记得越干净越好。</p>
+            <p>但是为什么张无忌能够马上领会剑意？</p>
+            <p>显然与他之前已经踏踏实实地按照知识—技能—才干的规律，修习了九阳神功和乾坤大挪移有关。上乘武功的才干一致，技能相通，只是知识略有不同。正如当你站到了 17 楼往下看，你就一定会比楼下的人明白，去某个公交站怎么走。当你在某一个领域做到顶尖，你也很容易掌握另一个领域的知识和技能，在外人看起来，就是一通百通了。</p>
+            <p>真正的高手，就是这样炼成的。</p>
+            <p>关于才干，还有一个事情要交代：</p>
+            <p><strong>很多人一旦接触了能力三核，会认为才干最重要，开始沉迷于各种评测与自我发觉，希望获胜。其实不然——才干虽然在职业优胜中非常重要，但是没有了技能和知识，也没戏。比方说我的才干：好奇、幽默感和求真，但这和你有什么关系？只有结合了生涯和写作的技能，才干才能外化出职业能力——才干才有了被识别的价值。</strong></p>
+            <p>在我看来，对于大部分职位，知识和技能就已经足够，而对于公司里面一上来就要发挥天赋，jump&nbsp;out&nbsp;of&nbsp;the&nbsp;box 的小朋友，我要说，先进去你的盒子！知识技能只需要认真和努力，所以对于大部分工作，认真努力就有 80 分。以大部分人努力程度之浅，他们根本没做到 80 分。</p>
+            <p>如果你只是希望通过找到天赋少付出些努力而超车——你根本没有资格谈天赋。</p>
+            <p><strong>摘自</strong>：古典新书《<a target="_blank" href="http://www.amazon.cn/gp/product/B00JVEY0IE/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;camp=536&amp;creative=3200&amp;creativeASIN=B00JVEY0IE&amp;linkCode=as2&amp;tag=vastwork-23"><font color="#0099cc">你的生命有什么可能</font></a>》</p>
+            <p class="comment-img">
+                <img src="ext/about/how-to-become-a-professional.jpg"/>
+            </p>
+            <p><strong>左岸记：</strong>上面引用武侠的例子，我总觉得很虚，那就引用沈从文在他的家书和《废邮存底》中谈创作的两段话，接接地气：</p>
+            <p>新作品中的过三关，第三项的“技术关”，表面看来轻而易举，具体作来就会明白相当困难。过去以为要“天才”，正如相信“命运”，实由于缺少认识，也不从客观实践上去求证。应当承认有所谓“天才”，如音乐、数学、电子、原子能研究……最容易证实。文学作者中，特别是诗人，从中外古今看来，也都的确可见出天才的光辉，写小说或许也有之。却决不是周扬辈过去捧的所谓“艺术语言大师”。其实几个人做人都相当聪明，写小说却相当笨。我可不相信“命运”和“天才”，一切工作结果，都通过极大困难，运用惊人耐心，而加以克服得来的。过去写短篇是这样现实态度，后来搞文物还是用同样态度。五四以来有上千成万人搞创作，大多数人全淘汰掉了，跑万米式搞个廿卅年不断努力的，不到十个人。少数人侥幸，机会好，成了“作家”，依然不久还是昙花一现的过去了。这个多数有许多理由不干这个“费力不讨好”工作，或教书，或作官，或经商，都比写作容易得多。只有过来人，才明白技术关不简单。因为包括脑和手的相互为用。灵敏度和准确度都是要反复长期探索，才把握得住。决不是在学校上上课可以得到的！要有高度的集中，广泛的幻想，大量的对文字对事件的理解力、消化力，和重新综合力。从工作说，我完全失败了，因为和发展变动中时代游离。从工作经验说，我懂得了如何过技术关，必须克服些什么障碍。可真像是“作战”！特别是短篇小说，靠学校那些先生，不能科学解决问题的。承认它“难”而必须“持久”，才可望过关。才是实事求是。才可望从一群受过严格锻炼的少壮作者中，产生一些够格合要求作品。不然将依然是万千人起步，三五人跑达终点，多不经济！不改变训练方法，和写作态度，多数人是过不了这一关的。学习写作看书也是问题，如何看书？照学校习惯，和廿岁学生兴趣，总是欢喜劝人或爱好看大部头长篇，从故事情节中发生浓厚兴趣，记住的也是内容情节。其实这对自己写作帮助不大，甚至于妨碍写作。应当看短篇，写短篇，大量写从各方面试笔，才会慢慢突破一切内外障碍，得到进展的。</p>
+            <p>你问，“一个作者应当要多少基本知识？”这不是几句话说得尽的问题。别的什么书上一定有这个答案。但答案显然全不适用。一个大兵，认识方字一千个左右，训练得法，他可以写出很好的故事。一个老博士，大房子里书籍从地板堆积到楼顶，而且每一本书皆经过他圈点校订，假定说，这些书全是诗歌吧，可是这个人你要他作一首诗，也许他写不出什么好诗。这不是知识多少问题，是训练问题。你有两只脚，两只眼睛，一个脑子，一只右手，想到什么地方就走去，要看什么就看定它，用脑子记忆，且把另一时另一种记忆补充，要写时就写下它，不知如何写时就温习别的作品是什么样式完成。如此训练下去，久而久之，自然就弄对了。学术专家需要专门学术的知识，文学作者却需要常识和想象。有丰富无比的常识，去运用无处不及的想象，把小说写好实在是件太容易的事情了。懒惰畏缩，在一切生活一切工作上皆不会有好成绩，当然也不能把小说写好。谁肯用力多爬一点路，谁就达到高一点的峰头。</p>
+            <p>原文链接：<a href="http://www.zreading.cn/archives/4403.html">http://www.zreading.cn/archives/4403.html</a></p>
+        </pane>
+
+        <!-- Stay Hungry,Stay Foolish -->
+        <pane heading="Stay Hungry,Stay Foolish">
+            <header class="title">
+                <h3 class="title">Stay Hungry,Stay Foolish</h3>
+                <p class="title-description"></p>
+            </header>
+            <p class="comment-img">
+                <img src="ext/about/stay-hungry-stay-foolish.jpg"/>
+            </p>
+        </pane>
+
+
+    </tabs>
+</div>

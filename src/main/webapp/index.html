@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html data-ng-app="wiki">
+<head>
+    <title>HIS Wiki——水墨丹青</title>
+    <meta charset="utf-8">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="wiki ng-cloak" data-ng-cloak data-ng-controller="WikiMainController">
+    <h1 class="hide">HIS Wiki</h1>
+
+    <!-- 网页正在加载时，“加载”消息提示 -->
+    <div data-ng-show="overlay.message" class="overlay">
+        <p class="message ng-binding" data-ng-bind="overlay.message">正在加载... ...</p>
+    </div>
+
+    <!-- 网站Logo、登录、注册按钮等内容 -->
+    <header>
+        <h2 class="hide"></h2>
+        <div class="container">
+            <div class="row">
+                <div class="span6">
+                    <h3 class="logo">HIS Wiki</h3>
+                    <p class="description">新军字一号项目组知识分享用Wiki。</p>
+                </div>
+                <div class="span6 join-us">
+                    <div class="signup">
+                        <button class="btn btn-warning" data-ng-click="wikiSignUpModalShow = true">注册</button>
+                    </div>
+                    <div class="login">
+                        <button class="btn btn-success" data-ng-click="wikiLoginModalShow = true">登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 其他设备上的应用，站内搜索 -->
+    <section class="submenu">
+        <div class="container">
+            <div class="row">
+                <div class="span6 other-device">
+                    在其他设备上使用
+                    <a class="btn">iPhone</a>
+                    <a class="btn">iPad</a>
+                    <a class="btn">Android</a>
+                </div>
+                <form class="span6 form-search">
+                    <div class="input-append">
+                        <input type="text" class="span2 search-query" placeholder="名称、作者、Tag">
+                        <button type="submit" class="btn">搜索</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 使用图片滑动等效果，吸引用户查看主旨宣传 -->
+    <section class="slogan-slide">
+        <h2 class="hide">Slogan Slide</h2>
+        <div class="cu3er_resize">
+            <div id="cu3er-container"><a href="http://www.adobe.com/go/getflashplayer"> <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></div>
+        </div>
+    </section>
+
+    <!-- 一些声明 -->
+    <footer class="footer">
+        <div class="container">
+            <p class="row">
+                © Copyright 和仁Wiki. All Rights Reserved.
+            </p>
+            <ul class="unstyled sns">
+                <li><a target="_blank" class="weibo">新浪微博</a></li>
+                <li><a target="_blank" class="weixin">微信</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- 用户注册表单 -->
+    <div modal="wikiSignUpModalShow" class="hide" options="wikiSignUpModalOptions">
+        <div class="modal-header">
+            <button type="button" class="close" data-ng-click="wikiSignUpModalShow = false">&times;</button>
+            <h5>注册</h5>
+            <!--推荐其他注册方式-->
+            <ul class="unstyled sns">
+                <li>使用新浪微博帐号<a class="weibo">新浪微博</a></li>
+                <li>使用微信帐号<a class="weixin">微信</a></li>
+            </ul>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group"
+                     data-ng-class="{'error': signUpInfo.$$nameState == 'error', 'success': signUpInfo.$$nameState == 'success'}">
+                    <label class="control-label" for="signUpName"><span style="color: red;">*</span>用户名</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-user"></i></span>
+                            <input class="span2" id="signUpName" type="text" data-ng-model="signUpInfo.username" required
+                                   condition-focus="wikiSignUpModalShow" maxlength="15" spellcheck="false" data-ng-blur="checkUsername()"/>
+                        </div>
+                        <span data-ng-if="signUpInfo.$$nameState == ''" class="help-inline">您登录时使用的用户名</span>
+                        <span data-ng-if="signUpInfo.$$nameState == 'error'" class="help-inline">{{ signUpInfo.$$nameMessage }}</span>
+                        <span data-ng-if="signUpInfo.$$nameState == 'success'" class="help-inline">用户名有效</span>
+                    </div>
+                </div>
+                <div class="control-group"
+                     data-ng-class="{'error': signUpInfo.$$passwordState == 'error', 'success': signUpInfo.$$passwordState == 'success'}">
+                    <label class="control-label" for="signUpPassword"><span style="color: red;">*</span>密　码</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-pencil"></i></span>
+                            <input class="span2" id="signUpPassword" type="password" data-ng-model="signUpInfo.password" pattern=".{8,}" required data-ng-blur="checkPassword()">
+                        </div>
+                        <span data-ng-if="signUpInfo.$$passwordState == ''" class="help-inline">至少八个字符，不能有空格</span>
+                        <span data-ng-if="signUpInfo.$$passwordState == 'error'" class="help-inline">{{ signUpInfo.$$passwordMessage }}</span>
+                        <span data-ng-if="signUpInfo.$$passwordState == 'success'" class="help-inline">密码有效</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn span2 btn-primary btn-large" data-ng-click="confirmSignUp()">注册</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-link" data-ng-click="alreadyHaveAnAccount()">已经有账户？</button>
+        </div>
+    </div>
+
+    <!-- 用户登录表单 -->
+    <div modal="wikiLoginModalShow" class="hide" options="wikiLoginModalOptions">
+        <div class="modal-header">
+            <button type="button" class="close" data-ng-click="wikiLoginModalShow = false">&times;</button>
+            <h5>登录</h5>
+        </div>
+        <div class="modal-body">
+            <!-- 错误信息显示 -->
+            <div class="error-message error">　<span data-ng-show="errorMessage">{{ errorMessage }}</span></div>
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="loginName">用户名</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-user"></i></span>
+                            <input class="span2" id="loginName" type="text" data-ng-model="loginInfo.username" condition-focus="wikiLoginModalShow" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="loginPassword">密　码</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-pencil"></i></span>
+                            <input class="span2" id="loginPassword" type="password" data-ng-model="loginInfo.password" required>
+                        </div>
+                        <span class="help-inline"><a class="btn-link">忘记密码？</a></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn span2 btn-primary btn-large" data-ng-click="confirmLogin()">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-link" data-ng-click="notHaveAnAccountYet()">还没有账户？</button>
+        </div>
+    </div>
+<script src="assets/swfobject/swfobject.js"></script>
+<script type="text/javascript">
+    var flashvars = {};
+    flashvars.xml = "assets/swfobject/config.xml";
+    flashvars.font = "assets/swfobject/font.swf";
+    var attributes = {};
+    attributes.wmode = "transparent";
+    attributes.id = "slider";
+    swfobject.embedSWF("assets/swfobject/cu3er.swf", "cu3er-container", "960", "400", "9", "expressInstall.swf", flashvars, attributes);
+</script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/angular.js"></script>
+<script src="assets/js/angular-cookies.js"></script>
+<script src="assets/js/ui-bootstrap-tpls.js"></script>
+<script src="js/wiki-common.js"></script>
+<script src="js/wiki-index.js"></script>
+</body>
+</html>

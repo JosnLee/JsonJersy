@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: jersey-json-1.17">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/jersey/jersey-json/1.17/jersey-json-1.17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/jersey/jersey-json/1.17/jersey-json-1.17-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

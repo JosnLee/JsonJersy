@@ -1,0 +1,64 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Gradle : heren-wiki : heren-wiki.war (exploded)">
+    <output-path>$PROJECT_DIR$/classes/artifacts/heren-wiki/exploded/heren-wiki.war</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="heren-wiki/web/Web Gradle : heren-wiki.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="heren-wiki" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: jetty-servlet-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-webapp-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jersey-core-1.17" />
+          <element id="library" level="project" name="Gradle: jersey-server-1.17" />
+          <element id="library" level="project" name="Gradle: jersey-servlet-1.17" />
+          <element id="library" level="project" name="Gradle: jersey-json-1.17" />
+          <element id="library" level="project" name="Gradle: jersey-guice-1.17" />
+          <element id="library" level="project" name="Gradle: mysql-connector-java-5.1.30" />
+          <element id="library" level="project" name="Gradle: ojdbc6-11.2.0.1.0" />
+          <element id="library" level="project" name="Gradle: hibernate-entitymanager-4.2.5.Final" />
+          <element id="library" level="project" name="Gradle: hibernate-validator-4.3.0.Final" />
+          <element id="library" level="project" name="Gradle: guice-3.0" />
+          <element id="library" level="project" name="Gradle: guice-servlet-3.0" />
+          <element id="library" level="project" name="Gradle: guice-persist-3.0" />
+          <element id="library" level="project" name="Gradle: guava-13.0.1" />
+          <element id="library" level="project" name="Gradle: javax.servlet-api-3.1.0" />
+          <element id="library" level="project" name="Gradle: jetty-util-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-http-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-io-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-server-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-security-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: jetty-xml-9.2.0.v20140526" />
+          <element id="library" level="project" name="Gradle: asm-3.1" />
+          <element id="library" level="project" name="Gradle: jettison-1.1" />
+          <element id="library" level="project" name="Gradle: stax-api-1.0-2" />
+          <element id="library" level="project" name="Gradle: activation-1.1" />
+          <element id="library" level="project" name="Gradle: jaxb-api-2.2.2" />
+          <element id="library" level="project" name="Gradle: jaxb-impl-2.2.3-1" />
+          <element id="library" level="project" name="Gradle: jackson-core-asl-1.9.2" />
+          <element id="library" level="project" name="Gradle: jackson-mapper-asl-1.9.2" />
+          <element id="library" level="project" name="Gradle: jackson-jaxrs-1.9.2" />
+          <element id="library" level="project" name="Gradle: jackson-xc-1.9.2" />
+          <element id="library" level="project" name="Gradle: javax.inject-1" />
+          <element id="library" level="project" name="Gradle: aopalliance-1.0" />
+          <element id="library" level="project" name="Gradle: cglib-2.2.1-v20090111" />
+          <element id="library" level="project" name="Gradle: jboss-logging-3.1.0.GA" />
+          <element id="library" level="project" name="Gradle: dom4j-1.6.1" />
+          <element id="library" level="project" name="Gradle: jboss-transaction-api_1.1_spec-1.0.1.Final" />
+          <element id="library" level="project" name="Gradle: hibernate-jpa-2.0-api-1.0.1.Final" />
+          <element id="library" level="project" name="Gradle: hibernate-commons-annotations-4.0.2.Final" />
+          <element id="library" level="project" name="Gradle: javassist-3.15.0-GA" />
+          <element id="library" level="project" name="Gradle: antlr-2.7.7" />
+          <element id="library" level="project" name="Gradle: hibernate-core-4.2.5.Final" />
+          <element id="library" level="project" name="Gradle: validation-api-1.0.0.GA" />
+          <element id="library" level="project" name="Gradle: flyway-gradle-plugin-3.0" />
+          <element id="library" level="project" name="Gradle: flyway-core-3.0" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/classes/artifacts/heren-wiki/exploded/heren-wiki.war/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

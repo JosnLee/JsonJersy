@@ -1,0 +1,102 @@
+<!doctype html>
+<html data-ng-app="wikiDesktop">
+<head>
+    <meta charset="utf-8">
+    <title>HIS Wiki——水墨丹青</title>
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/jquery-ui.css" rel="stylesheet">
+    <link href="assets/css/select2.css" rel="stylesheet">
+    <link href="assets/css/zTreeStyle.css" rel="stylesheet">
+    <link href="assets/css/ng-grid.css" rel="stylesheet">
+    <link href="assets/css/prettify.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body data-ng-cloak class="ng-cloak desktop" data-ng-controller="WikiDesktopController">
+    <h1 class="hide">HIS Wiki——水墨丹青</h1>
+    <div data-ng-show="overlay.message" class="overlay">
+        <p class="message ng-binding" data-ng-bind="overlay.message">正在加载... ...</p>
+    </div>
+    <div class="sidebar">
+        <aside class="nav">
+            <h2 class="hide">右侧菜单</h2>
+            <div class="nav-profile">
+                <a class="nav-user-link"> <i class="icon-white icon-user"></i>&nbsp;<span data-ng-bind="loginUser.username || '未登录'"></span></a>
+                <a class="nav-sign-out pull-right" data-ng-click="signOut()"> <i class="icon-white icon-off"></i>&nbsp;退出</a>
+            </div>
+            <div class="nav-search">
+                <form id="location-bar">
+                    <input type="text" name="site-search" value="" id="site-search" placeholder="Search…" spellcheck="false">
+                    <ul class="list-group search-bar-tip" style="display: none;">
+                        <li class="list-group-item help">Search Tips</li>
+                        <li class="list-group-item help"><b>#tagname</b><br>Search a specific tag</li>
+                        <li class="list-group-item help"><b>@username</b><br>Search a specific user</li>
+                        <li class="list-group-item help"><b>keywords</b><br>Search specific keywords</li>
+                        <li class="list-group-item help"><b>@username #tagname</b><br>Search tags for a specific user</li>
+                        <li class="list-group-item help"><b>@username keywords</b><br>Search keywords for a specific user</li>
+                        <li class="list-group-item help"><b>http://</b><br>Search a specific web page on Delicious</li>
+                    </ul>
+                </form>
+            </div>
+            <ul class="nav-links unstyled">
+                <li data-ng-class="{on: $state.includes('tools')}"><a ui-sref="tools"> <i class="icon-white icon-pencil"></i>&nbsp;开发工具</a></li>
+                <li data-ng-class="{on: $state.includes('technology')}"><a ui-sref="technology"> <i class="icon-white icon-th-list"></i>&nbsp;技术学习</a></li>
+                <li data-ng-class="{on: $state.includes('rules')}"><a ui-sref="rules"> <i class="icon-white icon-list-alt"></i>&nbsp;编码规范</a></li>
+                <li data-ng-class="{on: $state.includes('widgets')}"><a ui-sref="widgets"> <i class="icon-white icon-th"></i>&nbsp;常用控件</a></li>
+                <li data-ng-class="{on: $state.includes('api')}"><a ui-sref="api"> <i class="icon-white icon-tasks"></i>&nbsp;常用API</a></li>
+                <li data-ng-class="{on: $state.includes('ui')}"><a ui-sref="ui"> <i class="icon-white icon-th-large"></i>&nbsp;常用界面</a></li>
+                <li data-ng-class="{on: $state.includes('qa')}"><a ui-sref="qa"> <i class="icon-white icon-envelope"></i>&nbsp;常见问题QA</a></li>
+                <li data-ng-class="{on: $state.includes('data-structure')}"><a ui-sref="data-structure"> <i class="icon-white icon-road"></i>&nbsp;数据结构</a></li>
+                <li data-ng-class="{on: $state.includes('jargon')}"><a ui-sref="jargon"> <i class="icon-white icon-inbox"></i>&nbsp;业务学习</a></li>
+                <li><a data-ng-click="messageBoardModal = true"> <i class="icon-white icon-signal"></i>&nbsp;消息大厅</a></li>
+                <li data-ng-class="{on: $state.includes('settings')}"><a ui-sref="settings"> <i class="icon-white icon-cog"></i>&nbsp;设　　置</a></li>
+                <li data-ng-class="{on: $state.includes('about')}"><a ui-sref="about"> <i class="icon-white icon-book"></i>&nbsp;关于本站</a></li>
+            </ul>
+        </aside>
+    </div>
+    <section class="main-container" ui-view ng-animate="{enter:'fade-enter'}">
+    </section>
+    <div modal="messageBoardModal" class="hide" options="messageBoardModalOptions">
+        <div class="modal-header">
+            <button type="button" class="close" data-ng-click="messageBoardModal = false">&times;</button>
+            <h5>消息大厅</h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                <span><strong>在这里查看消息</strong></span>
+            </div>
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="message">发送消息</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-user"></i></span>
+                            <input class="span2" id="message" type="text" data-ng-model="message.message" required/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-ng-click="sendMessage()">发送</button>
+            <button class="btn" data-ng-click="messageBoardModal = false">关闭</button>
+        </div>
+    </div>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/jquery-ui.js"></script>
+<script src="assets/js/jquery.ztree.core.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/select2.js"></script>
+<script src="assets/js/mousetrap.js"></script>
+<script src="assets/js/mousetrap-global.js"></script>
+<script src="assets/js/angular.js"></script>
+<script src="assets/js/angular-ui.js"></script>
+<script src="assets/js/angular-ui-router.js"></script>
+<script src="assets/js/angular-cookies.js"></script>
+<script src="assets/js/ui-bootstrap-tpls.js"></script>
+<script src="assets/js/ng-grid.js"></script>
+<script src="assets/js/prettify.js"></script>
+<script src="js/wiki-common.js"></script>
+<script src="js/wiki-desktop.js"></script>
+</body>
+</html>

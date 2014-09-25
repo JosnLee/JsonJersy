@@ -1,0 +1,442 @@
+<div class="tools">
+    <h2 class="app-title">
+        <span class="title-name">
+            <span class="name">开发工具</span>
+        </span>
+        <span class="title-description"><strong>学习项目中用到的开发工具</strong></span>
+    </h2>
+    <tabs>
+        <!-- 开发环境搭建 -->
+        <pane heading="开发环境搭建">
+            <header class="title">
+                <h3 class="title">开发环境搭建</h3>
+                <p class="title-description"></p>
+            </header>
+            <p>
+                以下是开发时，需要安装的开发工具的最小集合，所有开发工具，都可以在FTP文件服务器里面找到（参见同菜单下<strong>常用FTP文件地址</strong>标签页的内容）。
+                <ul>
+                    <li><strong>SVN:</strong>项目中的源代码、文档管理工具</li>
+                    <li><strong>JDK:</strong>Java Development Kit(Java开发工具包)</li>
+                    <li><strong>Gradle:</strong>自动化构建工具（依赖管理、执行单元测试、构建jar/war等）</li>
+                    <li><strong>IntelliJ:</strong>IDE（ Integrated Development Environment，集成开发环境）</li>
+                    <li><strong>Chrome:</strong>浏览器</li>
+                </ul>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/tools.jpg"/>
+            </p>
+        </pane>
+
+        <!-- SVN -->
+        <pane heading="SVN">
+            <header class="title">
+                <h3 class="title">SVN</h3>
+                <p class="title-description"></p>
+            </header>
+            <p>
+                下载地址：64bit——<a href="ftp://132.147.68.178/software/TortoiseSVN-1.7.5.22551-x64-svn-1.7.3.msi" target="_blank">ftp://132.147.68.178/software/TortoiseSVN-1.7.5.22551-x64-svn-1.7.3.msi</a>、<br/>
+                32bit——<a href="ftp://132.147.68.178/software/TortoiseSVN-1.7.6.22632-win32-svn-1.7.4.msi" target="_blank">ftp://132.147.68.178/software/TortoiseSVN-1.7.6.22632-win32-svn-1.7.4.msi</a>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/ftp-svn.png"/>
+            </p>
+            <p>
+                SVN使用说明：<a href="https://132.147.68.178/svn/dh2011/新军字一号技术培训/svn常用命令.doc" target="_blank">https://132.147.68.178/svn/dh2011/新军字一号技术培训/svn常用命令.doc</a>
+            </p>
+            <p>下载、安装完SVN之后，你可以使用SVN下载项目中用到的源代码、以及常用的一些文档</p>
+            <div>
+                <h4>源代码地址</h4>
+                <p>源代码地址：<a href="https://132.147.68.178/svn/sourcecode" target="_blank">https://132.147.68.178/svn/sourcecode</a> </p>
+                <p class="comment-img">
+                    <img src="ext/tools/svn-sourcecode.png">
+                </p>
+            </div>
+            <div>
+                <h4>常用培训文档地址</h4>
+                <ul>
+                    <li><a href="https://132.147.68.178/svn/dh2011/公共文档" target="_blank">https://132.147.68.178/svn/dh2011/公共文档</a> </li>
+                    <li><a href="https://132.147.68.178/svn/dh2011/开发文档" target="_blank">https://132.147.68.178/svn/dh2011/开发文档</a> </li>
+                    <li><a href="https://132.147.68.178/svn/dh2011/培训及总结" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结</a> </li>
+                    <li><a href="https://132.147.68.178/svn/dh2011/新军字一号技术培训" target="_blank">https://132.147.68.178/svn/dh2011/新军字一号技术培训</a> </li>
+                </ul>
+            </div>
+            <p>
+                常见错误处理：（1）如果遇到某个文件夹被locked了，则在该文件夹执行SVN的Clean up命令。
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/svn-locked.jpg">
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/svn-clean-up.jpg">
+            </p>
+        </pane>
+
+        <!-- JDK -->
+        <pane heading="JDK">
+            <header class="title">
+                <h3 class="title">JDK</h3>
+                <p class="title-description">JDK下载地址：<a href="ftp://132.147.68.178/software/jdk-7u45-windows-x64.exe" target="_blank">ftp://132.147.68.178/software/jdk-7u45-windows-x64.exe</a></p>
+            </header>
+            <p>
+                JDK下载地址：<a href="ftp://132.147.68.178/software/jdk-7u45-windows-x64.exe" target="_blank">ftp://132.147.68.178/software/jdk-7u45-windows-x64.exe</a><br/>
+                JRE(装32位):<a href="ftp://132.147.68.178/software/jre-7u45-windows-i586.exe" target="_blank">ftp://132.147.68.178/software/jre-7u45-windows-i586.exe</a>
+            </p>
+            <div>
+                <h4>环境变量配置</h4>
+                <p>
+                    1、<strong>JAVA_HOME</strong>(配制成Java的安装目录):
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-java-home.png">
+                </p>
+                <p>
+                    2、<strong>PATH</strong>(%JAVA_HOME%\bin，配制成Java的安装目录下的bin目录，bin即“binary”，二进制的意思，放置的是机器码的*.exe或者批处理*.bat):
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-java-path.png">
+                </p>
+                <p>
+                    查看JDK的环境变量是否配置好了，打开一个命令窗口，输入命令：javac -version，或者：java -version。
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-java-version.png">
+                </p>
+            </div>
+        </pane>
+
+        <!-- Gradle -->
+        <pane heading="Gradle">
+            <header class="title">
+                <h3 class="title">Gradle</h3>
+                <p class="title-description"></p>
+            </header>
+            <p>
+                下载地址： <a href="ftp://132.147.68.178/java/gradle-1.10-all.zip" target="_blank">ftp://132.147.68.178/java/gradle-1.10-all.zip</a>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/ftp-gradle.png">
+            </p>
+            <div>
+                <h4>环境变量配置</h4>
+                <p>
+                    1、<strong>GRADLE_HOME</strong>（gradle解压缩目录）
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-gradle-home.png">
+                </p>
+                <p>
+                    2、<strong>PATH</strong>(%GRADLE_HOME%\bin， gradle解压缩目录下的bin目录)
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-gradle-path.png">
+                </p>
+                <p>
+                    查看配置是否有效, 打开一个命令窗口，输入命令：gradle -version。
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-gradle-version.png">
+                </p>
+                <p>
+                    常用Gradle命令：
+                    <ul>
+                        <li>gradle tasks——查看所有可执行的任务</li>
+                        <li>gradle cI idea——删除、并重新生成IntelliJ的工程文件</li>
+                        <li>gradle –-refresh-dependencies——重新刷新、下载依赖</li>
+                        <li>gradle clean flywayClean test——执行Java单元测试</li>
+                        <li>... ...</li>
+                    </ul>
+                </p>
+                <p>
+                    写个Gradle的HelloWorld：
+                </p>
+                <p>
+                    (1)创建一个helloworld目录，并创建一个<strong>build.gradle</strong>文件，用记事本打开，添加如下内容：<br/>
+<pre class="prettyprint">
+    <code>
+        task helloworld << {
+            System.out.println("Hello World!");
+            println("It works, too!");
+        }
+    </code>
+</pre>
+                </p>
+                <p>
+                    使用<strong>命令窗口</strong>到helloworld目录，执行命令<code>gradle helloworld</code>
+                </p>
+                <p class="comment-img">
+                    <img src="ext/tools/env-gradle-helloworld.png">
+                </p>
+            </div>
+        </pane>
+
+        <!-- IntelliJ -->
+        <pane heading="IntelliJ">
+            <header class="title">
+                <h3 class="title">IntelliJ</h3>
+                <p class="title-description"></p>
+            </header>
+            <p>
+                下载地址：
+                <li>Ultimate Edition：<a href="ftp://132.147.68.178/software/ideaIU-12.1.exe" target="_blank">ftp://132.147.68.178/software/ideaIU-12.1.exe</a>（最终版，需注册，可以用InteliJ12.0-keygen.rar 注册机注册）</li>
+                <li>Community Edition：<a href="ftp://132.147.68.178/software/ideaIC-12.1.exe" target="_blank">ftp://132.147.68.178/software/ideaIC-12.1.exe</a>（社区版） </li>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/ftp-idea.png">
+            </p>
+            <p>
+                常用的IntelliJ的快捷键
+
+            </p>
+            <p>
+                <ul>
+                    <li>Alt+回车 导入包,自动修正</li>
+                    <li>Ctrl+N   查找类</li>
+                    <li>Ctrl+Shift+N 查找文件</li>
+                    <li>Ctrl+Alt+L  格式化代码</li>
+                    <li>Ctrl+Alt+O 优化导入的类和包</li>
+                    <li>Alt+Insert 生成代码(如get,set方法,构造函数等)</li>
+                    <li>Ctrl+E或者Alt+Shift+C  最近更改的代码</li>
+                    <li>Ctrl+R 替换文本</li>
+                    <li>Ctrl+F 查找文本</li>
+                    <li>Ctrl+Shift+Space 自动补全代码</li>
+                    <li>Ctrl+空格 代码提示</li>
+                    <li>Ctrl+Alt+Space 类名或接口名提示</li>
+                    <li>Ctrl+P 方法参数提示</li>
+                    <li>Ctrl+Shift+Alt+N 查找类中的方法或变量</li>
+                    <li>Alt+Shift+C 对比最近修改的代码</li>
+
+                    <li>Shift+F6  重构-重命名</li>
+                    <li>Ctrl+Shift+先上键</li>
+                    <li>Ctrl+X 删除行</li>
+                    <li>Ctrl+D 复制行</li>
+                    <li>Ctrl+/ 或 Ctrl+Shift+/  注释（// 或者/*...*/ ）</li>
+                    <li>Ctrl+J  自动代码</li>
+                    <li>Ctrl+E 最近打开的文件</li>
+                    <li>Ctrl+H 显示类结构图</li>
+                    <li>Ctrl+Q 显示注释文档</li>
+                    <li>Alt+F1 查找代码所在位置</li>
+                    <li>Alt+1 快速打开或隐藏工程面板</li>
+                    <li>Ctrl+Alt+ left/right 返回至上次浏览的位置</li>
+                    <li>Alt+ left/right 切换代码视图</li>
+                    <li>Alt+ Up/Down 在方法间快速移动定位</li>
+                    <li>Ctrl+Shift+Up/Down 代码向上/下移动。</li>
+                    <li>F2 或Shift+F2 高亮错误或警告快速定位</li>
+
+                    <li>代码标签输入完成后，按Tab，生成代码。</li>
+                    <li>选中文本，按Ctrl+Shift+F7 ，高亮显示所有该文本，按Esc高亮消失。</li>
+                    <li>Ctrl+W 选中代码，连续按会有其他效果</li>
+                    <li>选中文本，按Alt+F3 ，逐个往下查找相同文本，并高亮显示。</li>
+                    <li>Ctrl+Up/Down 光标跳转到第一行或最后一行下</li>
+                    <li>Ctrl+B 快速打开光标处的类或方法</li>
+                </ul>
+            </p>
+            <p>
+                设置IntelliJ的SDK：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/idea-sdk-setting.jpg">
+            </p>
+        </pane>
+
+        <!-- Chrome -->
+        <pane heading="Chrome">
+            <header class="title">
+                <h3 class="title">Chrome</h3>
+                <p class="title-description"></p>
+            </header>
+            <p>
+                下载地址： <a href="ftp://132.147.68.178/software/chrome_26.0.1410.43.exe" target="_blank">ftp://132.147.68.178/software/chrome_26.0.1410.43.exe</a>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/ftp-chrome.png">
+            </p>
+            <p>
+                开发AngularJS时，建议安装扩展——AngularJS Batarang
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/extension-angular-batarang.png">
+            </p>
+            <p>
+                Chrome Extensions：从Chrome的网上应用商店，搜索AngularJS，选择”AngularJS Batarang”，如下图所示:
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/chrome-angularjs-batarang.jpg">
+            </p>
+            <p>
+                AngularJS Batarang的视频资料，你可以在FTP服务器（地址：<a href="ftp://132.147.68.178/trainingVideo/AngularJs/" target="_blank">ftp://132.147.68.178/trainingVideo/AngularJs/</a>）里面找到：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/angularjs-batarang-video.jpg">
+            </p>
+        </pane>
+        <!-- 其他工具 -->
+        <pane heading="其他工具">
+            <header class="title">
+                <h3 class="title">其他工具</h3>
+                <p class="title-description"></p>
+            </header>
+            <ul>
+                <li>JRE（要用32位的）<a href="ftp:/132.147.68.178/java/jre-7u55-windows-i586.exe" target="_blank">ftp://132.147.68.178/java/jre-7u55-windows-i586.exe</a></li>
+                <li>iReport：<a href="ftp://132.147.68.178/documents/报表/JasperReport/iReport-5.0.1.zip" target="_blank">ftp://132.147.68.178/documents/报表/JasperReport/iReport-5.0.1.zip</a></li>
+            </ul>
+        </pane>
+            <!-- 常用文件地址 -->
+        <pane heading="常用文件地址">
+            <header class="title">
+                <h3 class="title">常用文件地址</h3>
+                <p class="title-description"></p>
+            </header>
+            <div class="ftp">
+                <h4>FTP服务器（IP: 132.147.68.178）</h4>
+                <p>
+                    使用时，请在Windows文件资源管理器（也就是你打开文件夹的那个工具）中输入如下地址：
+                    <a href="ftp://132.147.68.178" target="_blank">ftp://132.147.68.178</a>;
+                    登陆时，需要输入的用户名及密码为：upload/upload——登陆后结果如下图所示。
+                </p>
+                <p class="comment-img">
+                    <img src="ext/technology/ftp-server.png"/>
+                </p>
+            </div>
+            <div class="svn">
+                <h4>SVN服务器（IP: 132.147.68.178）</h4>
+                <ul>
+                    <li>源代码地址：<a href="https://132.147.68.178/svn/sourcecode" target="_blank">https://132.147.68.178/svn/sourcecode</a> </li>
+                    <li>公共文档：<a href="https://132.147.68.178/svn/dh2011/公共文档" target="_blank">https://132.147.68.178/svn/dh2011/公共文档</a> </li>
+                    <li>开发文档：<a href="https://132.147.68.178/svn/dh2011/开发文档" target="_blank">https://132.147.68.178/svn/dh2011/开发文档</a> </li>
+                    <li>培训及总结：<a href="https://132.147.68.178/svn/dh2011/培训及总结" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结</a> </li>
+                    <li>新军字一号技术培训：<a href="https://132.147.68.178/svn/dh2011/新军字一号技术培训" target="_blank">https://132.147.68.178/svn/dh2011/新军字一号技术培训</a> </li>
+                </ul>
+            </div>
+            <div class="usage-url">
+                <h4>本地常用网址</h4>
+                <ul>
+                    <li>Jenkins（持续集成）：<a href="http://132.147.68.175:7777/job/herendh/" target="_blank">http://132.147.68.175:7777/job/herendh/</a> </li>
+                    <li>URTracker(bug管理)：<a href="http://132.147.68.101/pts/home.aspx" target="_blank">http://132.147.68.101/pts/home.aspx</a> </li>
+                    <li>heren-master项目: <a href="http://132.147.68.176:8051/heren/security/login-new.html" target="_blank">http://132.147.68.176:8051/heren/security/login-new.html</a> </li>
+                    <li>heren-report项目: <a href="http://132.147.68.172:8081/heren-report/api/jasper-prints/fill" target="_blank">http://132.147.68.172:8081/heren-report/api/jasper-prints/fill</a> </li>
+                    <li>AngularJS API：<a href="http://132.147.68.172:8081/angular-guide-zh/#/api" target="_blank">http://132.147.68.172:8081/angular-guide-zh/#/api</a> </li>
+                    <li>Maven本地仓库：<a href="http://132.147.68.178:8081/nexus/index.html" target="_blank">http://132.147.68.178:8081/nexus/index.html</a> </li>
+                </ul>
+            </div>
+
+        </pane>
+
+        <!-- 运行项目代码 -->
+        <pane heading="运行项目代码">
+            <header class="title">
+                <h3 class="title">运行项目代码</h3>
+                <p class="title-description">源代码地址：<a href="https://132.147.68.178/svn/sourcecode" target="_blank">https://132.147.68.178/svn/sourcecode</a></p>
+            </header>
+            <p>
+                下载完sourcecode后，可以看到的项目代码目录结构（所有可以访问到的项目代码）:
+                <ul>
+                    <li>最主要的项目：<a href="https://132.147.68.178/svn/sourcecode/heren-master" target="_blank">heren-master</a>——Web服务</li>
+                    <li>辅助项目：<a href="https://132.147.68.178/svn/sourcecode/heren-report-project" target="_blank">heren-report-project</a>——报表服务</li>
+                    <li>等等（其他项目）... ...</li>
+                </ul>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-project.png"/>
+            </p>
+            <p>
+                (一)编译运行heren-master项目步骤——需要使用<strong>命令窗口</strong>，到源代码所属目录，执行以下Gradle命令：
+            </p>
+            <p>
+                (1)<code>gradle tasks</code>——查看gradle能够执行的任务(task)：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-tasks.png"/>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-tasks2.png"/>
+            </p>
+            <p>
+                (2)<code>gradle cI idea</code>——生成IDE所需的工程文件(*.ipr)：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-cI-idea.png"/>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-cI-idea2.png"/>
+            </p>
+            <p>
+                之后，Gradle会下载项目所依赖的各个Jar包（即Java类库）：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-downloading-jars.png"/>
+            </p>
+            <p>
+                Gradle干了什么？
+                它下载了项目的所有依赖（即在build.gradle中列出来的各个版本的Java类库，其中也包括没有列出来、却被列出来的Java类库依赖的其他Jar包），可以在用户的.gradle目录下进行查看，如下所示：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-gradle-dependencies.png"/>
+            </p>
+            <p>
+                (二)配置<strong>config.yml</strong>文件:
+            </p>
+            <p>
+                config.yml文件，主要是为了配置数据库连接、服务端口等信息。
+<pre class="prettyprint">
+<code>
+database:
+    driver: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@132.147.68.176:1522:orcl
+    user: herendh
+    password: herendh
+    db.migration:
+        auto: false
+    properties:
+        hibernate.show_sql: true
+http:
+    port: 8051
+logging:
+    level: INFO
+    console:
+        level: INFO
+</code>
+</pre>
+            <p>
+                使用快捷键Ctrl + Shift + N（搜索文件），输入文件名“config.yml”，将文件中的数据库链接改为上述内容（先连接176测试用数据库）。
+            </p>
+            <p>
+                (三) 重启IntelliJ，运行<strong>LauncherStartClass</strong>(使用快捷键Ctrl + N，输入类名“LauncherStartClass”，点击回车跳到该类)：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-run-launcher.png"/>
+            </p>
+            <p>
+                (四)访问一个测试页面：<a href="http://localhost:8051/heren/reports/report-setting.html" target="_blank">http://localhost:8051/heren/reports/report-setting.html</a>
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-test-server-running.png"/>
+            </p>
+            <p>
+                综上所述，运行项目时，需要了解的信息如下：
+            </p>
+            <p class="comment-img">
+                <img src="ext/tools/sourcecode-running-configs.png"/>
+            </p>
+
+        </pane>
+
+        <!-- 代码结构 -->
+        <pane heading="代码结构">
+            <header class="title">
+                <h3 class="title">代码结构</h3>
+                <p class="title-description">主项目heren-master的代码结构：<a></a></p>
+            </header>
+            <p>
+                提交代码流程：先更新，[执行测试]，再提交。
+            </p>
+            <p>其他工具：</p>
+            <ul>
+                <li>报表iReport工具地址:<a href="ftp://132.147.68.178/documents/报表/JasperReport/iReport-5.0.1.zip" target="_blank">ftp://132.147.68.178/documents/报表/JasperReport/iReport-5.0.1.zip</a></li>
+                <li>报表JasperReport资料：<a href="ftp://132.147.68.178/documents/报表/" target="_blank">ftp://132.147.68.178/documents/报表/</a></li>
+                <li>报表翻译资料SVN地址：<a href="https://132.147.68.178/svn/dh2011/培训及总结/练习总结/使用iReport进行报表设计-王士江、才洪波.doc" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结/练习总结/使用iReport进行报表设计-王士江、才洪波.doc</a>、
+                <a href="https://132.147.68.178/svn/dh2011/培训及总结/练习总结/新军字一号报表方案（JasperReport简介部分）-王士江（建议使用Microsoft Office 2007查看）.ppt" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结/练习总结/新军字一号报表方案（JasperReport简介部分）-王士江（建议使用Microsoft Office 2007查看）.ppt</a>、
+                <a href="https://132.147.68.178/svn/dh2011/培训及总结/练习总结示例源码/jasperreport-demo.zip" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结/练习总结示例源码/jasperreport-demo.zip</a></li>
+            </ul>
+        </pane>
+    </tabs>
+</div>

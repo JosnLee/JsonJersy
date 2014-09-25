@@ -1,0 +1,109 @@
+<div class="qa" prettyprint-trigger>
+    <h2 class="app-title">
+        <span class="title-name">
+            <span class="name">常见问题QA</span>
+        </span>
+        <span class="title-description"><strong>常见问题的解决方法</strong></span>
+    </h2>
+    <div class="tabbable">
+        <ul class="nav nav-tabs" id="qas">
+            <li class="active"><a href="#select2">select2</a></li>
+            <li><a href="#ngGrid">ngGrid</a></li>
+            <li><a href="#tabs">tabs</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- select2相关问题解决办法 -->
+            <div class="tab-pane active" id="select2">
+                <div class="qas">
+                    <h3 class="qa-question">select2宽度跳动——select2的宽度，或者先由宽变窄，或者先由窄变宽</h3>
+                    <div class="qa-answer">
+                        <!-- 问题发生原因 -->
+                        <div class="the-reason">
+                            这是因为浏览器需要对select2控件渲染两次——这个问题一般发生在大家需要对select2的宽度进行精确控制的时候。
+                            <p>
+                                大家在使用select2的时候，一般会把代码写成如下形式(input形式也是同理)：
+                                <!-- 代码示例 -->
+<pre class="prettyprint linenums">
+    <code>
+        &lt;!-- HTML中会写的代码 --&gt;
+        &lt;select ui-select2 ng-model="inpVisit.workingStatus"&gt;
+            &lt;option value=0&gt;在职&lt;/option&gt;
+            &lt;option value=1&gt;离职&lt;/option&gt;
+            &lt;option value=2&gt;退休&lt;/option&gt;
+        &lt;/select&gt;
+
+        /**CSS中会写的代码（进行宽度控制）：*/
+        .XXX-index .main-body .unit-controls .select2-container{
+        width: 240px;
+        }
+    </code>
+</pre>
+                            </p>
+                            <p>
+                                    由于浏览器加载完HTML、CSS后，马上就开始渲染HTML内容，所以总会先显示我们的&lt;select&gt;（或&lt;input&gt;等）元素，
+                                包括应用该元素（此时它还不是select2）的默认样式，这时该元素所显示的宽度可能不会是我们想要的；而select2作为JavaScript控件（即angular指令），
+                                会在加载完jquery.js、select2.js、angular.js、angular-ui.js等等之后，才开始生效的，包括应用我们在*.css文件中所指定select2-container的样式；
+                                而由于网速的原因，这个时间（下载Javascript代码的时间）不可预期，所以，所有在做时间延迟等方面的努力，都是不可靠的。
+                            </p>
+                        </div>
+                        <!-- 问题解决方法 -->
+                        <div class="how-to-handler">
+                            在我们的&lt;select&gt;(或&lt;input&gt;等等)元素上面加上class类“select2-container”——这个方法适用于所有用到select2的场合（包括&lt;select&gt;元素、&lt;input&gt;元素，以及使用select2作为模版的其他自定义指令）。
+                            <p>
+                                    解决问题的思路就是，在加载完HTML、CSS后，浏览器马上进行内容渲染的时候，就已经把我们指定的select2-container的样式（尤其是宽度）
+                               应用在我们写就的&lt;select&gt;(或&lt;input&gt;等等)元素上面；
+                            </p>
+                            <p>
+                                解决方法就是，在我们的&lt;select&gt;(或&lt;input&gt;等等)元素上面加上class类“select2-container”，形式如下:
+<pre class="prettyprint linenums">
+    <code>
+        &lt;!-- HTML中会写的代码，同时加上class类"select2-container" --&gt;
+        &lt;select ui-select2 class="select2-container" ng-model="inpVisit.workingStatus"&gt;
+            &lt;option value=0&gt;在职&lt;/option&gt;
+            &lt;option value=1&gt;离职&lt;/option&gt;
+            &lt;option value=2&gt;退休&lt;/option&gt;
+        &lt;/select&gt;
+
+        /**CSS中会写的代码（进行宽度控制）：*/
+        .XXX-index .main-body .unit-controls .select2-container{
+        width: 240px;
+        }
+    </code>
+</pre>
+                            </p>
+                        </div>
+                        <!-- 更多知识补充 -->
+                        <div class="more">
+                            这个错误体现出了浏览器处理HTML、CSS、JavaScript的流程。
+                            <p></p>
+                        </div><!-- End more -->
+                    </div><!-- End qa-answer -->
+                </div><!-- End qas -->
+            </div><!-- End tab-pane -->
+
+            <!-- ngGrid相关问题解决办法 -->
+            <div class="tab-pane" id="ngGrid">
+                <div class="qas">
+                    <h3 class="qa-question">去掉ngGrid的默认enter事件，添加自己的enter事件</h3>
+                    <div class="qa-answer">
+                        <p>处理方法，参见文档：<a href="https://132.147.68.178/svn/dh2011/培训及总结/练习总结/ngGrid默认回车事件屏蔽——王士江.ppt" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结/练习总结/ngGrid默认回车事件屏蔽——王士江.ppt</a></p>
+                        <p>实力源代码：<a href="https://132.147.68.178/svn/dh2011/培训及总结/练习总结示例源码/ng-grid-default-enter.zip" target="_blank">https://132.147.68.178/svn/dh2011/培训及总结/练习总结示例源码/ng-grid-default-enter.zip</a></p>
+                    </div><!-- End qa-answer -->
+                </div><!-- End qas -->
+
+            </div><!-- End tab-pane -->
+
+            <!-- tabs相关问题解决办法 -->
+            <div class="tab-pane" id="tabs">
+                <div class="qas">
+                    <h3 class="qa-question">ui-bootstrap的tabs指令，无法跟ngGrid兼容</h3>
+                    <div class="qa-answer">
+                        <p>使用bootstrap原生的tab页。</p>
+                    </div><!-- End qa-answer -->
+                </div><!-- End qas -->
+            </div><!-- End tab-pane -->
+
+        </div>
+    </div><!-- End tab-content -->
+</div>

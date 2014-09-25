@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html ng-app="userManageApp">
+<head>
+    <title>用户管理</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body ng-cloak ng-controller="UserManageController">
+<div class="user-manage-index">
+    <!-- 用户常用操作区 -->
+    <div class="control-panel">
+        <button class="btn btn-primary" ng-click="openAddNewUserModal()">新增用户</button>
+        <button class="btn btn-primary" ng-click="openModifyUserPasswordModal()">修改密码</button>
+    </div>
+
+    <!-- 用户信息展示区 -->
+    <div class="users-info">
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="user in users" ng-click="selectThisUser(user)" ng-class="{'selected': user == selectedUser}">
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.password }}</td>
+                <td><button class="btn" ng-click="deleteThisUser($index, user)">删除</button> </td>
+            </tr>
+        </table>
+    </div>
+    <!-- 新增用户模态框 -->
+    <div hr-draggable class="hide" modal="addNewUserModalFlag" options="userModalOptions">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="addNewUserModalFlag = false">×</button>
+            <h5>添加用户</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="newUserName">用户名：</label>
+                    <div class="controls">
+                        <input class="span2" type="text" id="newUserName" ng-model="newUser.username" condition-focus="addNewUserModalFlag"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="newUserPassword">密码：</label>
+                    <div class="controls">
+                        <input class="span2" type="password" id="newUserPassword" ng-model="newUser.password"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="saveNewUser()">保存</button>
+            <button class="btn cancel" ng-click="addNewUserModalFlag = false">关闭</button>
+        </div>
+    </div>
+
+    <!-- 修改用户模态框 -->
+    <div class="hide" modal="modifyUserPasswordModalFlag" options="userModalOptions">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="modifyUserPasswordModalFlag = false">×</button>
+            <h5>修改密码</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">用户名：</label>
+                    <div class="controls">
+                        <input class="span2" type="text" readonly="readonly" value="{{selectedUser.username}}"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="selectedUserFormerPassword">原来密码：</label>
+                    <div class="controls">
+                        <input class="span2" type="password" ng-model="selectedUser.formerPassword" id="selectedUserFormerPassword" condition-focus="modifyUserPasswordModalFlag"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="selectedUserNewPassword">新的密码：</label>
+                    <div class="controls">
+                        <input class="span2" type="password" ng-model="selectedUser.newPassword" id="selectedUserNewPassword"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="saveUserPassword()">保存</button>
+            <button class="btn cancel" ng-click="modifyUserPasswordModalFlag = false">关闭</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="assets/js/jquery.js"></script>
+<script type="text/javascript" src="assets/js/jquery-ui.js"></script>
+<script type="text/javascript" src="assets/js/angular.js"></script>
+<script type="text/javascript" src="assets/js/ui-bootstrap-tpls.js"></script>
+<script type="text/javascript" src="js/wiki-common.js"></script>
+<script type="text/javascript" src="js/user-manage.js"></script>
+</body>
+</html>

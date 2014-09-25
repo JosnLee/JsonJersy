@@ -1,0 +1,108 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'fatjar'
+apply plugin: 'war'
+
+
+buildscript {
+    repositories {
+        mavenLocal();
+        mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+        mavenRepo url: 'http://132.147.68.178:8081/nexus/content/repositories/heren-snapshots';
+        mavenCentral();
+    }
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+}
+
+sourceCompatibility = '1.7'
+
+repositories {
+    mavenLocal();
+    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/groups/public/';
+    mavenRepo url: 'http://132.147.68.178:8081/nexus/content/repositories/heren-snapshots';
+    mavenCentral();
+}
+dependencies {
+    //Jetty
+    compile "org.eclipse.jetty:jetty-servlet:9.2.0.v20140526"
+    compile "org.eclipse.jetty:jetty-webapp:9.2.0.v20140526"
+
+    //JAX-RS
+//    compile "javax.ws.rs:javax.ws.rs-api:2.0"
+
+    //Jersey 2.X
+//    compile "org.glassfish.jersey.containers:jersey-container-jetty-http:2.9"//Jersey core Servlet 3.x implementation
+////    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:2.9"//Jersey core Servlet 2.x implementation
+//    compile "org.glassfish.jersey.containers:jersey-container-servlet:2.9"//Jersey core Servlet 3.x implementation
+//    compile "org.glassfish.jersey.core:jersey-common:2.9"
+//    compile "org.glassfish.jersey.core:jersey-server:2.9"
+//    compile "org.glassfish.jersey.media:jersey-media-moxy:2.9"
+
+    //Jersey 1.X
+    compile "com.sun.jersey:jersey-core:1.17"
+    compile "com.sun.jersey:jersey-server:1.17"
+    compile "com.sun.jersey:jersey-servlet:1.17"
+    compile "com.sun.jersey:jersey-json:1.17"
+    compile "com.sun.jersey.contribs:jersey-guice:1.17"
+    
+    //Junit
+    testCompile "junit:junit:4.10"
+    
+    //MySQL
+    compile "mysql:mysql-connector-java:5.1.30"
+
+    //Oracle
+    compile "com.oracle:ojdbc6:11.2.0.1.0"
+
+    //Hibernate
+    compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+    compile "org.hibernate:hibernate-validator:4.3.0.Final"
+    
+    //Google Inject
+    compile "com.google.inject:guice:3.0"
+    compile "com.google.inject.extensions:guice-servlet:3.0"
+    compile "com.google.inject.extensions:guice-persist:3.0"
+    compile 'org.flywaydb:flyway-gradle-plugin:3.0'
+//    compile "com.google.inject:guice:4.0-beta"
+//    compile "com.google.inject.extensions:guice-servlet:4.0-beta"
+//    compile "com.google.inject.extensions:guice-persist:4.0-beta"
+    
+    //Google Guava
+    compile "com.google.guava:guava:13.0.1"
+    
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs += 'src/main/webapp'
+        }
+    }
+}
+
+fatJar {
+    baseName = 'herenWiki'
+    manifest {
+        attributes 'Main-Class': 'com.wiki.Main'
+    }
+    exclude 'META-INF/MANIFEST.MF', '**/*.RSA', '**/*.SF', '**/*.DSA'
+}
+
+war {
+    baseName = "heren-wiki"
+}
+
+
+idea.project.ipr {
+    withXml { provider ->
+        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'svn'
+    }
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.runtime
+}
