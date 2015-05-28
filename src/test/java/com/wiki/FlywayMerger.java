@@ -10,6 +10,8 @@ public  class FlywayMerger {
         // Create the Flyway instance
         Flyway flyway = new Flyway();
 
+        System.out.println(1111);
+
         // Point it to the database
         flyway.setDataSource("jdbc:mysql://127.0.0.1:3306/orcl", "root", "herendh");
         flyway.clean();
